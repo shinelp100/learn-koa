@@ -7,7 +7,7 @@ const app = new Koa();
 const routers = require('./routers/index');
 
 // 静态资源目录对于相对入口文件app.js的路径
-const staticPath = '../src/app';
+const staticPath = '../dist/app';
 app.use(Static(path.join(__dirname,staticPath)));
 
 /*加载路由中间件*/
