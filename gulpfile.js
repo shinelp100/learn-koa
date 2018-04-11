@@ -21,6 +21,50 @@ var gulp = require("gulp"),
     // 防止因为编译失败而退出
     plumber = require('gulp-plumber');
 
+
+
+
+/****************************dev build***************************/
+gulp.task('less-watch', () => {
+    return gulp.src('./source/**/*.less', {base: 'source'})
+        .pipe(less())
+        .pipe(plumber())
+        .pipe(gulp.dest('./src'))
+});
+
+gulp.task('webpack-watch', () => {
+    return gulp.src('./source/js/**/*.js', {base: 'src'})
+    // 使用webpack配置文件，详细见下
+        .pipe(vinylNamed((file) => {
+            var dir = path.dirname(file.path);
+            // 替换掉 public 目录路径
+            dir = dir.replace(/^.*source(\\|\/)/, '');
+            console.log(path.join(dir, path.basename(file.path, path.extname(file.path))));
+            // 将文件路径及 basename 作为 name
+            return path.join(dir, path.basename(file.path, path.extname(file.path)));
+        }))
+        .pipe(plumber())
+        .pipe(webpackStream(config))
+        .pipe(gulp.dest('./src'))
+});
+
+
+/*watch*/
+gulp.task('watch', ['browserSync'], () => {
+    gulp.watch('./source/**/*.less',['less-watch',browserSync.reload]);
+    gulp.watch('./src/**/*.html', browserSync.reload);
+    gulp.watch('./source/**/*.js',['webpack-watch', browserSync.reload]);
+});
+
+/*dev*/
+gulp.task('default', ['browserSync', 'watch', 'less-watch', 'webpack-watch']);
+
+
+
+
+/********************prod build**************************/
+
+
 /*压缩html*/
 gulp.task('html', () => {
     var manifest = gulp.src('dist/manifest/img/rev-manifest.json');
@@ -40,7 +84,7 @@ gulp.task("htmlrevreplace", function () {
 /*gulp-less*/
 gulp.task('less', ['images'], () => {
     var manifest = gulp.src('dist/manifest/img/rev-manifest.json');
-    return gulp.src('./src/**/*.less', {base: 'src'})
+    return gulp.src('./src/**/*.css', {base: 'src'})
         .pipe(rev())
         .pipe(less())
         .pipe(plumber())
@@ -70,16 +114,16 @@ gulp.task('images', function () {
 gulp.task('webpack', () => {
     return gulp.src('./src/js/**/*.js', {base: 'src'})
     // 使用webpack配置文件，详细见下
-        .pipe(vinylNamed((file) => {
-            var dir = path.dirname(file.path);
-            // 替换掉 public 目录路径
-            dir = dir.replace(/^.*src(\\|\/)/, '');
-            console.log(path.join(dir, path.basename(file.path, path.extname(file.path))));
-            // 将文件路径及 basename 作为 name
-            return path.join(dir, path.basename(file.path, path.extname(file.path)));
-        }))
-        .pipe(plumber())
-        .pipe(webpackStream(config))
+    //     .pipe(vinylNamed((file) => {
+    //         var dir = path.dirname(file.path);
+    //         // 替换掉 public 目录路径
+    //         dir = dir.replace(/^.*src(\\|\/)/, '');
+    //         console.log(path.join(dir, path.basename(file.path, path.extname(file.path))));
+    //         // 将文件路径及 basename 作为 name
+    //         return path.join(dir, path.basename(file.path, path.extname(file.path)));
+    //     }))
+    //     .pipe(plumber())
+    //     .pipe(webpackStream(config))
         .pipe(rev())
         .pipe(uglify())
         .pipe(gulp.dest('./dist'))
@@ -88,10 +132,10 @@ gulp.task('webpack', () => {
 });
 
 /*fonts*/
-gulp.task('fonts', function () {
-    return gulp.src('./src/fonts/**/*')
-        .pipe(gulp.dest('./dist/fonts'))
-});
+// gulp.task('fonts', function () {
+//     return gulp.src('./src/fonts/**/*')
+//         .pipe(gulp.dest('./dist/fonts'))
+// });
 
 /*browserSync*/
 gulp.task('browserSync', () => {
@@ -99,41 +143,20 @@ gulp.task('browserSync', () => {
         port: 8087,
         // proxy: '127.0.0.1:5000',
         server: {
-            baseDir: './dist'
+            baseDir: './'
         }
     })
 });
-
-/*页面模板创建合并css、js*/
-// gulp.task('useref', () => {
-//     return gulp.src('./src/**/*.html')
-//         .pipe(useref())
-//         .pipe(gulpIf('*.js', uglify()))
-//         .pipe(gulpIf('*.css', cssnano()))
-//         .pipe(gulp.dest('./dist'))
-// });
-
 
 /*clean:dist*/
 gulp.task('clean:dist', function () {
     return del.sync('dist');
 });
 
-/*watch*/
-gulp.task('watch', ['browserSync'], () => {
-    gulp.watch('./src/**/*.less', ['prod']);
-    gulp.watch('./src/**/*.html', ['prod']);
-    gulp.watch('./src/**/*.js', ['prod']);
-});
-
-/*dev*/
-gulp.task('default', ['browserSync', 'watch']);
-
 /*prod*/
 gulp.task('prod', function () {
     runSequence('clean:dist',
         ['html', 'less', 'images', 'webpack'],
-        'htmlrevreplace',
-        browserSync.reload
+        'htmlrevreplace'
     )
 });
