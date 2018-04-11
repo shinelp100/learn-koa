@@ -17,7 +17,9 @@ var gulp = require("gulp"),
     htmlmin = require('gulp-htmlmin'),
     // 其中rev()用于给文件名扩展名前增加一个md5后缀
     rev = require('gulp-rev'),
-    replace = require('gulp-rev-replace');
+    replace = require('gulp-rev-replace'),
+    // 防止因为编译失败而退出
+    plumber = require('gulp-plumber');
 
 /*压缩html*/
 gulp.task('html', () => {
@@ -41,6 +43,7 @@ gulp.task('less', ['images'], () => {
     return gulp.src('./src/**/*.less', {base: 'src'})
         .pipe(rev())
         .pipe(less())
+        .pipe(plumber())
         // prefix: prefix
         .pipe(replace({manifest: manifest}))
         .pipe(cssnano())
@@ -75,6 +78,7 @@ gulp.task('webpack', () => {
             // 将文件路径及 basename 作为 name
             return path.join(dir, path.basename(file.path, path.extname(file.path)));
         }))
+        .pipe(plumber())
         .pipe(webpackStream(config))
         .pipe(rev())
         .pipe(uglify())
@@ -95,7 +99,7 @@ gulp.task('browserSync', () => {
         port: 8087,
         // proxy: '127.0.0.1:5000',
         server: {
-            baseDir: './src/app'
+            baseDir: './dist'
         }
     })
 });
@@ -115,12 +119,11 @@ gulp.task('clean:dist', function () {
     return del.sync('dist');
 });
 
-
 /*watch*/
 gulp.task('watch', ['browserSync'], () => {
-    gulp.watch('./src/**/*.less', browserSync.reload);
-    gulp.watch('./src/**/*.html', browserSync.reload);
-    gulp.watch('./src/**/*.js', browserSync.reload);
+    gulp.watch('./src/**/*.less', ['prod']);
+    gulp.watch('./src/**/*.html', ['prod']);
+    gulp.watch('./src/**/*.js', ['prod']);
 });
 
 /*dev*/
@@ -130,6 +133,7 @@ gulp.task('default', ['browserSync', 'watch']);
 gulp.task('prod', function () {
     runSequence('clean:dist',
         ['html', 'less', 'images', 'webpack'],
-        'htmlrevreplace'
+        'htmlrevreplace',
+        browserSync.reload
     )
 });
