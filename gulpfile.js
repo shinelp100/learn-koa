@@ -8,27 +8,83 @@ var gulp = require("gulp"),
     imagemin = require('gulp-imagemin'),
     cache = require('gulp-cache'),
     del = require('del'),
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
+    vinylNamed = require('vinyl-named'),
+    path = require('path'),
+    config = require('./webpack.config.js'),
+    htmlmin = require('gulp-htmlmin'),
+    // 其中rev()用于给文件名扩展名前增加一个md5后缀
+    rev = require('gulp-rev'),
+    replace = require('gulp-rev-replace');
 
+/*压缩html*/
+gulp.task('html', () => {
+    var manifest = gulp.src('dist/manifest/img/rev-manifest.json');
+    return gulp.src('./src/**/*.html', {base: 'src'})
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(replace({manifest: manifest}))
+        .pipe(gulp.dest('./dist'))
+});
+/*替换html中的文件路径*/
+gulp.task("htmlrevreplace", function () {
+    var manifest = gulp.src("./dist/manifest/**/rev-manifest.json");
+    return gulp.src('./dist/app/*.html')
+        .pipe(replace({manifest: manifest}))
+        .pipe(gulp.dest('./dist/app'));
+});
 
 /*gulp-less*/
-gulp.task('less', () => {
-    return gulp.src('./src/css/*.less')
+gulp.task('less', ['images'], () => {
+    var manifest = gulp.src('dist/manifest/img/rev-manifest.json');
+    return gulp.src('./src/**/*.less', {base: 'src'})
+        .pipe(rev())
         .pipe(less())
-        .pipe(gulp.dest('./dist/css'));
+        // prefix: prefix
+        .pipe(replace({manifest: manifest}))
+        .pipe(cssnano())
+        .pipe(gulp.dest('./dist'))
+        // 生成css文件路径映射
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('dist/manifest/css'));
 });
 
 /*images*/
 gulp.task('images', function () {
-    return gulp.src('./src/img/**/*.+(png|jpg|jpeg|gif|svg)')
+    return gulp.src('./src/**/*.+(png|jpg|jpeg|gif|svg)')
         .pipe(cache(imagemin({
             interlaced: true
         })))
-        .pipe(gulp.dest('./dist/img'))
+        /*放在下面避免读取cache时不生成manifest文件*/
+        .pipe(rev())
+        .pipe(gulp.dest('./dist'))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('dist/manifest/img'));
+});
+
+/*压缩js*/
+gulp.task('webpack', () => {
+    return gulp.src('./src/js/**/*.js', {base: 'src'})
+    // 使用webpack配置文件，详细见下
+        .pipe(vinylNamed((file) => {
+            var dir = path.dirname(file.path);
+            // 替换掉 public 目录路径
+            dir = dir.replace(/^.*src(\\|\/)/, '');
+            console.log(path.join(dir, path.basename(file.path, path.extname(file.path))));
+            // 将文件路径及 basename 作为 name
+            return path.join(dir, path.basename(file.path, path.extname(file.path)));
+        }))
+        .pipe(webpackStream(config))
+        .pipe(rev())
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist'))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('dist/manifest/js'));
 });
 
 /*fonts*/
-gulp.task('fonts', function() {
+gulp.task('fonts', function () {
     return gulp.src('./src/fonts/**/*')
         .pipe(gulp.dest('./dist/fonts'))
 });
@@ -36,32 +92,35 @@ gulp.task('fonts', function() {
 /*browserSync*/
 gulp.task('browserSync', () => {
     browserSync.init({
+        port: 8087,
+        // proxy: '127.0.0.1:5000',
         server: {
-            baseDir: './src/app/'
+            baseDir: './src/app'
         }
     })
 });
 
-gulp.task('useref', () => {
-    return gulp.src('./src/**/*.html', {base: 'src'})
-        .pipe(useref())
-        .pipe(gulpIf('*.js', uglify()))
-        .pipe(gulpIf('*.css', cssnano()))
-        .pipe(gulp.dest('./dist'))
-});
+/*页面模板创建合并css、js*/
+// gulp.task('useref', () => {
+//     return gulp.src('./src/**/*.html')
+//         .pipe(useref())
+//         .pipe(gulpIf('*.js', uglify()))
+//         .pipe(gulpIf('*.css', cssnano()))
+//         .pipe(gulp.dest('./dist'))
+// });
 
 
 /*clean:dist*/
-gulp.task('clean:dist', function() {
+gulp.task('clean:dist', function () {
     return del.sync('dist');
 });
 
 
 /*watch*/
 gulp.task('watch', ['browserSync'], () => {
-    gulp.watch('./src/css/*.less', browserSync.reload);
-    gulp.watch('./src/app/*.html', browserSync.reload);
-    gulp.watch('./src/js/*.js', browserSync.reload);
+    gulp.watch('./src/**/*.less', browserSync.reload);
+    gulp.watch('./src/**/*.html', browserSync.reload);
+    gulp.watch('./src/**/*.js', browserSync.reload);
 });
 
 /*dev*/
@@ -70,6 +129,7 @@ gulp.task('default', ['browserSync', 'watch']);
 /*prod*/
 gulp.task('prod', function () {
     runSequence('clean:dist',
-        ['less', 'images', 'useref']
+        ['html', 'less', 'images', 'webpack'],
+        'htmlrevreplace'
     )
 });

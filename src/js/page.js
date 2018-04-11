@@ -1,1 +1,3 @@
-alert('page');
+const page = ()=>{
+    console.log('page');
+};
