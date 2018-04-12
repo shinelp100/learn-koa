@@ -124,8 +124,9 @@ console.log(Vue);
 home();
 
 var error = function error() {
-    console.log('error');
+    console.log('error1');
 };
+error();
 
 /***/ }),
 /* 4 */

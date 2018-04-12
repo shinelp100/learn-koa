@@ -5,5 +5,6 @@ console.log(Vue);
 home();
 
 const error = ()=>{
-    console.log('error');
+    console.log('error1');
 };
+error();
