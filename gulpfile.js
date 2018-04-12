@@ -37,7 +37,7 @@ gulp.task('webpack-watch', () => {
     // 使用webpack配置文件，详细见下
         .pipe(vinylNamed((file) => {
             var dir = path.dirname(file.path);
-            // 替换掉 public 目录路径
+            // 替换掉 source 目录路径
             dir = dir.replace(/^.*source(\\|\/)/, '');
             console.log(path.join(dir, path.basename(file.path, path.extname(file.path))));
             // 将文件路径及 basename 作为 name
@@ -112,7 +112,7 @@ gulp.task('images', function () {
 
 /*压缩js*/
 gulp.task('webpack', () => {
-    return gulp.src('./src/js/**/*.js', {base: 'src'})
+    return gulp.src(['./src/js/**/*.js','./src/libs/**/*.js'], {base: 'src'})
     // 使用webpack配置文件，详细见下
     //     .pipe(vinylNamed((file) => {
     //         var dir = path.dirname(file.path);
