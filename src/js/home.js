@@ -2540,7 +2540,7 @@ var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(6);
 
 var app = void 0;
-Axios.get('/app/home').then(function (response) {
+Axios.get('http://localhost:3007/app/home').then(function (response) {
     app = new Vue({
         el: "#ssr",
         data: {

@@ -140,7 +140,7 @@ gulp.task('webpack', () => {
 /*browserSync*/
 gulp.task('browserSync', () => {
     browserSync.init({
-        port: 8087,
+        port: 3006,
         // proxy: '127.0.0.1:5000',
         server: {
             baseDir: './'

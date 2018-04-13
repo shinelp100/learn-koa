@@ -19,7 +19,7 @@ function Spider(url) {
                     $(".hover-text").each(function(i,elem){
                         let $elem = $(elem);
                         items.push({
-                            "IP Address":$elem.find("h4").eq(0).find('span').text(),
+                            "IPAddress":$elem.find("h4").eq(0).find('span').eq(0).text(),
                             "Port":$elem.find("h4").eq(1).find('span').text(),
                             "Password":$elem.find("h4").eq(2).find('span').text(),
                             "Method":$elem.find("h4").eq(3).text().replace('Method:',''),
