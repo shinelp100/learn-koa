@@ -2,7 +2,7 @@ const render = require('../utils/render');
 const { query } = require('../utils/async-db');
 
 async function selectAllData( ) {
-    let sql = 'SELECT * FROM ssr';
+    let sql = 'SELECT * FROM ssr LIMIT 10';
     let dataList = await query( sql );
     return dataList
 }
