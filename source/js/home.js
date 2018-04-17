@@ -3,15 +3,19 @@ const Axios = require("../libs/axios.min");
 
 
 let app;
-Axios.get('http://localhost:3007/app/home')
+Axios.get('/app/home')
     .then(function (response) {
-        app = new Vue({
-            el: "#ssr",
-            data: {
-                items: response.data
-            },
-            methods: {}
-        });
+        if(response.data.code==0){
+            app = new Vue({
+                el: "#ssr",
+                data: {
+                    items: response.data.spiderData
+                },
+                methods: {}
+            });
+        } else {
+            alert(`抓取${response.data.message}网站有误，请稍后重试`)
+        }
     })
     .catch(function (error) {
         console.log(error);

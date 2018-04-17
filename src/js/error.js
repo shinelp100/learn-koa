@@ -2540,14 +2540,18 @@ var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(6);
 
 var app = void 0;
-Axios.get('http://localhost:3007/app/home').then(function (response) {
-    app = new Vue({
-        el: "#ssr",
-        data: {
-            items: response.data
-        },
-        methods: {}
-    });
+Axios.get('/app/home').then(function (response) {
+    if (response.data.code == 0) {
+        app = new Vue({
+            el: "#ssr",
+            data: {
+                items: response.data.spiderData
+            },
+            methods: {}
+        });
+    } else {
+        alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+    }
 }).catch(function (error) {
     console.log(error);
 });

@@ -17,6 +17,6 @@ app.use(Static(path.join(__dirname,staticPath)));
 /*加载路由中间件*/
 app.use(routers.routes()).use(routers.allowedMethods());
 
-app.listen(3007,()=>{
+app.listen(3007,'0.0.0.0',()=>{
     console.log('app is listening port of 3007');
 });

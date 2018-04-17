@@ -1,24 +1,24 @@
 const render = require('../utils/render');
-const Spider = require('../utils/spider');
-const schedule = require('node-schedule');
+const { query } = require('../utils/async-db');
 
+async function selectAllData( ) {
+    let sql = 'SELECT * FROM ssr';
+    let dataList = await query( sql );
+    return dataList
+}
 
 module.exports = async (ctx) => {
-    /*get请求对象ctx.query*/
-    /*get请求ctx.request.querystring字符串 */
-
-    let url = "https://get.ishadowx.net/";
-    let spider = new Spider(url);
-    let spiderData = await spider.spider();
-    /*没必要做定时任务  每次新请求都会抓取新数据*/
-    // let j = schedule.scheduleJob('*/10 * * * * *', async ()=>{
-    //     spiderData = await spider.spider();
-    //     spiderData = 1;
-    //     ctx.body = spiderData;
-    //     console.log("spiderData:",spiderData)
-    // });
+    let dataList = await selectAllData();
     if(ctx.url === "/app/home"){
-        ctx.body = spiderData;
+        let data = {};
+        if(dataList === 'error'){
+            data.code = 1;
+            data.message = url;
+        } else {
+            data.code = 0;
+            data.spiderData = JSON.parse(JSON.stringify(dataList));
+        }
+        ctx.body = data;
     } else {
         ctx.body = await render('home');
     }
