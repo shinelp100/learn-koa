@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -281,7 +281,45 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 2 */
+/* 2 */,
+/* 3 */,
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(5);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Vue = __webpack_require__(6);
+var Axios = __webpack_require__(9);
+
+var app = void 0;
+Axios.get('http://47.104.226.230:3007/app/home').then(function (response) {
+    if (response.data.code == 0) {
+        app = new Vue({
+            el: "#ssr",
+            data: {
+                items: response.data.spiderData
+            },
+            methods: {}
+        });
+    } else {
+        alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+    }
+}).catch(function (error) {
+    console.log(error);
+});
+
+module.exports = app;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2527,39 +2565,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }return Ia.call(this, e, t);
   }, mn.compile = Sa, mn;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(4).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(7).setImmediate))
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Vue = __webpack_require__(2);
-var Axios = __webpack_require__(6);
-
-var app = void 0;
-Axios.get('/app/home').then(function (response) {
-    if (response.data.code == 0) {
-        app = new Vue({
-            el: "#ssr",
-            data: {
-                items: response.data.spiderData
-            },
-            methods: {}
-        });
-    } else {
-        alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-    }
-}).catch(function (error) {
-    console.log(error);
-});
-
-module.exports = app;
-
-/***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -2612,7 +2621,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(5);
+__webpack_require__(8);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -2626,7 +2635,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -2819,7 +2828,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(1)))
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3191,10 +3200,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	}]);
 });
 //# sourceMappingURL=axios.min.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10)(module)))
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -3219,15 +3228,6 @@ module.exports = function(module) {
 	}
 	return module;
 };
-
-
-/***/ }),
-/* 8 */,
-/* 9 */,
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(3);
 
 
 /***/ })

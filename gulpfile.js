@@ -68,7 +68,7 @@ gulp.task('default', ['browserSync', 'watch', 'less-watch', 'webpack-watch']);
 /*压缩html*/
 gulp.task('html', () => {
     var manifest = gulp.src('dist/manifest/img/rev-manifest.json');
-    return gulp.src('./src/**/*.html', {base: 'src'})
+    return gulp.src('./src/app/*.html', {base: 'src'})
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(replace({manifest: manifest}))
         .pipe(gulp.dest('./dist'))
@@ -143,7 +143,7 @@ gulp.task('browserSync', () => {
         port: 3006,
         // proxy: '127.0.0.1:5000',
         server: {
-            baseDir: './'
+            baseDir: './src'
         }
     })
 });

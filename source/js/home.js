@@ -3,7 +3,7 @@ const Axios = require("../libs/axios.min");
 
 
 let app;
-Axios.get('/app/home')
+Axios.get('http://47.104.226.230:3007/app/home')
     .then(function (response) {
         if(response.data.code==0){
             app = new Vue({

@@ -6,7 +6,7 @@ const cors = require('koa2-cors');//解决跨域问题  cors:跨域资源共享
 const app = new Koa();
 
 app.use(cors({
-    origin:"http://localhost:3006"//允许跨域的域名 可以查看源代码
+    origin:"*"//允许跨域的域名 可以查看源代码
 }));
 const routers = require('./routers/index');
 
