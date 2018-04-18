@@ -24,7 +24,7 @@ function Spider(url) {
                             "Port":$elem.find("h4").eq(1).find('span').text(),
                             "Password":$elem.find("h4").eq(2).find('span').text(),
                             "Method":$elem.find("h4").eq(3).text().replace('Method:',''),
-                            "imgUrl":"https://get.ishadowx.net/"+$elem.find("h4").eq(4).find('a').attr('href'),
+                            "imgUrl":$elem.find("h4").eq(4).find('a').attr('href')=='undefined'?"https://get.ishadowx.net/"+$elem.find("h4").eq(4).find('a').attr('href'):"javascript:void(0);",
                             "moment":moment().format()
                         });
                         resolve(items);

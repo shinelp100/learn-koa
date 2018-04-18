@@ -3,31 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>shadowSocks</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link rel="shortcut icon" href="../img/favicon.ico">
     <link rel="stylesheet" href="../css/home.css">
 </head>
 <body>
 <div id="ssr">
-    <table  v-for="(item, index) in items">
-        <tr><td colspan="2">免费账号{{++index}}</td></tr>
+    <table>
+        <tr><td colspan="5">免费ssr账号</td></tr>
         <tr>
             <td>IP Address</td>
-            <td>{{item.IPAddress}}</td>
-        </tr>
-        <tr>
             <td>Port</td>
-            <td>{{item.Port}}</td>
-        </tr>
-        <tr>
             <td>Password</td>
-            <td>{{item.Password}}</td>
-        </tr>
-        <tr>
             <td>Method</td>
-            <td>{{item.Method}}</td>
-        </tr>
-        <tr>
             <td>ssrUrl</td>
+        </tr>
+        <tr v-clock v-for="(item, index) in items">
+            <td>{{item.IPAddress}}</td>
+            <td>{{item.Port}}</td>
+            <td>{{item.Password}}</td>
+            <td>{{item.Method}}</td>
             <td><a :href="item.imgUrl">ShadowSocks</a></td>
         </tr>
     </table>

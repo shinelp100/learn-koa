@@ -9,9 +9,12 @@ body table {
   border-collapse: collapse;
 }
 body table tr td {
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #333;
-  width: 50%;
+  width: 20%;
+}
+[v-clock] {
+  display: none;
 }
 body {
   background-color: red;
