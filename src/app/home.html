@@ -25,6 +25,9 @@
             <td>{{item.Method}}</td>
             <td><a :href="item.imgUrl">ShadowSocks</a></td>
         </tr>
+        <tr  v-show="noData">
+            <td colspan="5">暂无数据...</td>
+        </tr>
     </table>
 </div>
 <script src="../js/home.js"></script>

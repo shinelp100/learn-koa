@@ -305,7 +305,11 @@ Axios.get('http://47.104.226.230:3007/app/home').then(function (response) {
         app = new Vue({
             el: "#ssr",
             data: {
-                items: response.data.spiderData
+                items: response.data.spiderData,
+                noData: false
+            },
+            created: function created() {
+                this.noData = this.items.length === 0 ? true : this.noData;
             },
             methods: {}
         });

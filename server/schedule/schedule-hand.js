@@ -4,7 +4,7 @@ const { insertData } = require('../utils/async-db');
 const toArr = require('../utils/toArr');
 
 /*添加定时任务*/
-let j = schedule.scheduleJob('6 6 0,6,12,18 * * *', async ()=>{
+let j = schedule.scheduleJob('*/3 * * * * *', async ()=>{
     let url = "https://free.ishadowx.net/";
     let spider = new Spider(url);
     let spiderData = await spider.spider();
