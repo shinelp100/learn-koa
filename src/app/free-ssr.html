@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>free-ssr</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+<table id="ssr">
+    <tr><td>抓取页面地址</td></tr>
+    <tr v-clock v-for="(item, index) in items">
+        <td>{{item.site}}</td>
+    </tr>
+</table>
+<script src="../js/free-ssr.js"></script>
+</body>
+</html>

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3195,16 +3195,14 @@ module.exports = function(module) {
 /***/ }),
 /* 7 */,
 /* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(10);
 
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3214,16 +3212,16 @@ var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(5);
 
 var app = void 0;
-Axios.get('http://47.104.226.230:3007/app/home').then(function (response) {
+Axios.get('http://47.104.226.230:3007/app/free-ssr/free').then(function (response) {
+    console.log(response);
     if (response.data.code == 0) {
         app = new Vue({
             el: "#ssr",
             data: {
-                items: response.data.spiderData,
-                noData: false
+                items: response.data.data
             },
             created: function created() {
-                this.noData = this.items.length === 0 ? true : this.noData;
+                console.log(this.items);
             },
             methods: {}
         });
