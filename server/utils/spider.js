@@ -25,7 +25,7 @@ function Spider(url) {
                             "Password":$elem.find("h4").eq(2).find('span').text(),
                             "Method":$elem.find("h4").eq(3).text().replace('Method:',''),
                             "imgUrl":$elem.find("h4").eq(4).find('a').attr('href')===undefined?"javascript:void(0);":url+"/"+$elem.find("h4").eq(4).find('a').attr('href'),
-                            "moment":moment().format()
+                            "date":moment().format('YYYY-MM-DD hh:mm:ss')
                         });
                         resolve(items);
                     });

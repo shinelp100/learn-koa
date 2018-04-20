@@ -2,7 +2,7 @@ const render = require('../utils/render');
 const {query} = require('../utils/async-db');
 
 async function selectAllData() {
-    let sql = 'SELECT * FROM ssr where moment > date_sub(now(),interval 6 hour)';
+    let sql = 'SELECT * FROM ssr where date > date_sub(now(),interval 6 hour)';
     let dataList = await query(sql);
     return dataList;
 }

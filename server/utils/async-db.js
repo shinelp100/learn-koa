@@ -28,7 +28,7 @@ let query = function (sql, values) {
 };
 
 let insertData = function(values){
-    let _sql = `insert into ssr (IPAddress,Port,Password,Method,imgUrl,moment) values ? `;
+    let _sql = `insert into ssr (IPAddress,Port,Password,Method,imgUrl,date) values ? `;
     return query(_sql,values);
 };
 
