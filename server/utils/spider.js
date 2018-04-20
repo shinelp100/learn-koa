@@ -1,7 +1,6 @@
 const cheerio = require('cheerio');//专为服务器设计的核心jQuery的快速，灵活和精益的实现。
 const superagent = require('superagent');//SuperAgent是一个小型的渐进式客户端HTTP请求库，以及具有相同API的Node.js模块，体现了许多高级HTTP客户端功能
 const moment = require('moment');//获取格式化时间
-const { ishadowx } = require('../config/freeSSRUrl');
 
 function Spider(url) {
     let self = this;
@@ -25,7 +24,7 @@ function Spider(url) {
                             "Port":$elem.find("h4").eq(1).find('span').text(),
                             "Password":$elem.find("h4").eq(2).find('span').text(),
                             "Method":$elem.find("h4").eq(3).text().replace('Method:',''),
-                            "imgUrl":$elem.find("h4").eq(4).find('a').attr('href')===undefined?"javascript:void(0);":ishadowx+$elem.find("h4").eq(4).find('a').attr('href'),
+                            "imgUrl":$elem.find("h4").eq(4).find('a').attr('href')===undefined?"javascript:void(0);":url+"/"+$elem.find("h4").eq(4).find('a').attr('href'),
                             "moment":moment().format()
                         });
                         resolve(items);
