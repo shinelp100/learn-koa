@@ -8,5 +8,4 @@ async function delOldData() {
 
 let j = schedule.scheduleJob('36 6 6 * * *',async ()=>{
     await delOldData();
-    console.log("shinelp100");
 });

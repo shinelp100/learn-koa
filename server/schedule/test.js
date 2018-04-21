@@ -1,3 +1,3 @@
 var moment = require("moment");
 
-console.log(moment().format('YYYY-MM-DD hh:mm:ss'));
+console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
