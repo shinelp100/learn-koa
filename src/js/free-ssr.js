@@ -3214,6 +3214,7 @@ var Axios = __webpack_require__(5);
 var app = new Vue({
     el: "#ssr",
     data: {
+        submit: "提交",
         items: [],
         URL: ""
     },
@@ -3223,16 +3224,22 @@ var app = new Vue({
     methods: {
         addSSRAddress: function addSSRAddress() {
             var vm = this;
-            Axios.post('http://47.104.226.230:3007/app/free-ssr/url', {
-                URL: vm.URL
-            }).then(function (response) {
-                if (response.data.code == 0) {
-                    vm.getUrl();return;
-                }
-                alert(response.data.message);
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if (!this.URL) {
+                alert("URL不能为空");
+            } else {
+                vm.submit = "提交中...";
+                Axios.post('http://47.104.226.230:3007/app/free-ssr/url', {
+                    URL: vm.URL
+                }).then(function (response) {
+                    vm.submit = "提交";
+                    if (response.data.code == 0) {
+                        vm.getUrl();vm.URL = "";return;
+                    }
+                    alert(response.data.message);vm.URL = "";
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         getUrl: function getUrl() {
             var _this = this;

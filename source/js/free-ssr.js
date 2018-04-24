@@ -5,6 +5,7 @@ const Axios = require("../libs/axios.min");
 let app = new Vue({
     el: "#ssr",
     data: {
+        submit:"提交",
         items: [],
         URL:""
     },
@@ -14,13 +15,19 @@ let app = new Vue({
     methods: {
         addSSRAddress:function(){
             var vm = this;
-            Axios.post('http://47.104.226.230:3007/app/free-ssr/url',{
-                URL:vm.URL
-            }).then(function(response){
+            if(!this.URL) {
+                alert("URL不能为空");
+            } else {
+                vm.submit = "提交中...";
+                Axios.post('http://47.104.226.230:3007/app/free-ssr/url',{
+                    URL:vm.URL
+                }).then(function(response){
+                    vm.submit = "提交";
                     if(response.data.code==0){vm.getUrl();vm.URL = "";return;}
-                    alert(response.data.message);
+                    alert(response.data.message);vm.URL = "";
                 })
-                .catch(function(error){console.log(error);})
+                    .catch(function(error){console.log(error);})
+            }
         },
         getUrl:function(){
             var _this = this;
