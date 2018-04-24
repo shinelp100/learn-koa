@@ -12,7 +12,7 @@ function Spider(url) {
             superagent.get(self.url)
                 .end((err, res) => {
                     if (err) {
-                        resolve("error");
+                        reject(err);
                         return ;
                     }
                     let items = [];

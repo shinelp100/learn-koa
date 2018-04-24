@@ -3211,27 +3211,44 @@ module.exports = __webpack_require__(10);
 var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(5);
 
-var app = void 0;
-Axios.get('http://47.104.226.230:3007/app/free-ssr/free').then(function (response) {
-    console.log(response);
-    if (response.data.code == 0) {
-        app = new Vue({
-            el: "#ssr",
-            data: {
-                items: response.data.data
-            },
-            created: function created() {
-                console.log(this.items);
-            },
-            methods: {}
-        });
-    } else {
-        alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+var app = new Vue({
+    el: "#ssr",
+    data: {
+        items: [],
+        URL: ""
+    },
+    created: function created() {
+        this.getUrl();
+    },
+    methods: {
+        addSSRAddress: function addSSRAddress() {
+            var vm = this;
+            Axios.post('http://47.104.226.230:3007/app/free-ssr/url', {
+                URL: vm.URL
+            }).then(function (response) {
+                if (response.data.code == 0) {
+                    vm.getUrl();return;
+                }
+                alert(response.data.message);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getUrl: function getUrl() {
+            var _this = this;
+            Axios.get('http://47.104.226.230:3007/app/free-ssr/free').then(function (response) {
+                if (response.data.code == 0) {
+                    _this.items = response.data.data;
+                } else {
+                    alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
-}).catch(function (error) {
-    console.log(error);
 });
-
+Vue.config.devtools = true;
 module.exports = app;
 
 /***/ })

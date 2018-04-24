@@ -11,7 +11,7 @@ async function selectAllData() {
 /*添加定时任务*/
 let j = schedule.scheduleJob('6 6 0,6,12,18 * * *', async ()=>{
     let url = await selectAllData();
-    let spider = new Spider(url[0]["site"]);
+    let spider = new Spider(url[0]["URL"]);
     let spiderData = await spider.spider();
     let data = toArr(spiderData);
     await insertData([data]);

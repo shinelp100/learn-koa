@@ -3213,27 +3213,39 @@ module.exports = __webpack_require__(12);
 var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(5);
 
-var app = void 0;
-Axios.get('http://47.104.226.230:3007/app/home').then(function (response) {
-    if (response.data.code == 0) {
-        app = new Vue({
-            el: "#ssr",
-            data: {
-                items: response.data.spiderData,
-                noData: false
-            },
-            created: function created() {
-                this.noData = this.items.length === 0 ? true : this.noData;
-            },
-            methods: {}
-        });
-    } else {
-        alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-    }
-}).catch(function (error) {
-    console.log(error);
+/*添加手动删除不能用的账号*/
+Vue.component("my-component", {
+    template: "\n        <tr>\n            <td>{{data.IPAddress}}</td>\n            <td>{{data.Port}}</td>\n            <td>{{data.Password}}</td>\n            <td>{{data.Method}}</td>\n            <td><a :href=\"data.imgUrl\" target=\"_blank\">ShadowSocks</a></td>\n            <td><span @click=\"$emit('remove')\">\u5220\u9664</span></td>\n        </tr>\n    ",
+    props: ["data"]
 });
 
+/*props参数不能使驼峰parentData  楼主爬坑*/
+
+var app = new Vue({
+    el: "#ssr",
+    data: {
+        items: [],
+        noData: false
+    },
+    created: function created() {
+        var _this = this;
+        Axios.get('http://47.104.226.230:3007/app/home').then(function (response) {
+            if (response.data.code == 0) {
+                if (response.data.spiderData.length === 0) {
+                    _this.noData = true;
+                } else {
+                    _this.noData = false;
+                    _this.items = response.data.spiderData;
+                }
+            } else {
+                alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    },
+    methods: {}
+});
 module.exports = app;
 
 /***/ })

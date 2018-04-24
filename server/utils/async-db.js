@@ -12,7 +12,7 @@ let query = function (sql, values) {
     return new Promise((resolve, reject) => {
         pool.getConnection(function (err, connection) {
             if (err) {
-                reject(err)
+                reject(err);
             } else {
                 connection.query(sql, values, (err, rows) => {
                     if (err) {
@@ -27,6 +27,7 @@ let query = function (sql, values) {
     })
 };
 
+/*values的数据格式需要注意*/
 let insertData = function(values){
     let _sql = `insert into ssr (IPAddress,Port,Password,Method,imgUrl,date) values ? `;
     return query(_sql,values);

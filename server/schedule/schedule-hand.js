@@ -12,7 +12,7 @@ async function selectAllData() {
 /*手动执行定时任务执行一次*/
 let j = async () => {
     let url = await selectAllData();
-    let spider = new Spider(url[0]["site"]);
+    let spider = new Spider(url[0]["URL"]);
     let spiderData = await spider.spider();
     let data = toArr(spiderData);
     await insertData([data]);
