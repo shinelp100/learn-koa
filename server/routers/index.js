@@ -6,11 +6,13 @@ const router = new Router();
 /*创建路由模块*/
 const home = require('./home');
 const freeSsr = require('./free-ssr');
+const user = require('./user');
 const page = require('./page');
 const error = require('./error');
 
 router.use('/app/',home.routes(),home.allowedMethods());
-router.use('/app/free-ssr',freeSsr.routes(),freeSsr.allowedMethods());
+router.use('/user',user.routes(),user.allowedMethods());
+router.use('/free-ssr',freeSsr.routes(),freeSsr.allowedMethods());
 router.use('/app/page',page.routes(),page.allowedMethods());
 
 

@@ -4,7 +4,11 @@ const bodyParser = require('koa-bodyparser');//中间件组合的路由实现解
 const freeSsr = require('../controllers/free-ssr');//路由控制器
 
 router.get("/", async (ctx)=>{
-    ctx.body = await render('free-ssr');
+    if(ctx.session && ctx.session.isLogin && ctx.session.userName ){
+        ctx.body = await render('free-ssr');
+    } else {
+        ctx.redirect('/user/login');
+    }
 })
     .get('/free',freeSsr.getFreeUrlList)
     .post('/url', bodyParser(), freeSsr.add);

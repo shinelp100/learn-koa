@@ -1,10 +1,11 @@
 const mysql = require('mysql');
+const config = require('../config');
 
 const pool = mysql.createPool({
-    host: '47.104.226.230',
-    user: 'shinelp100',
-    password: 'shinelp100',
-    database: 'ssr'
+    host:  config.database.HOST,
+    user: config.database.USERNAME,
+    password: config.database.PASSWORD,
+    database: config.database.DATABASE
     // insecureAuth: true
 });
 

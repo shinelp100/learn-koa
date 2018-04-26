@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3195,14 +3195,18 @@ module.exports = function(module) {
 /***/ }),
 /* 7 */,
 /* 8 */,
-/* 9 */
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(14);
 
 
 /***/ }),
-/* 10 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3210,53 +3214,36 @@ module.exports = __webpack_require__(10);
 
 var Vue = __webpack_require__(2);
 var Axios = __webpack_require__(5);
-
-var app = new Vue({
-    el: "#ssr",
+var vm = new Vue({
+    el: "#login",
     data: {
-        submit: "提交",
-        items: [],
-        URL: ""
-    },
-    created: function created() {
-        this.getUrl();
+        username: "",
+        password: ""
     },
     methods: {
-        addSSRAddress: function addSSRAddress() {
+        submit: function submit() {
             var vm = this;
-            if (!this.URL) {
-                alert("URL不能为空");
-            } else {
-                vm.submit = "提交中...";
-                Axios.post('/free-ssr/url', {
-                    URL: vm.URL
+            if (this.username.replace(/ /g, '') && this.password.replace(/ /g, '')) {
+                Axios.post("/user/login", {
+                    name: vm.username,
+                    password: vm.password
                 }).then(function (response) {
-                    vm.submit = "提交";
-                    if (response.data.code == 0) {
-                        vm.getUrl();vm.URL = "";return;
+                    if (response.data.code === 0) {
+                        location.href = "/free-ssr";
+                    } else {
+                        alert(response.data.message);
                     }
-                    alert(response.data.message);vm.URL = "";
-                }).catch(function (error) {
-                    console.log(error);
+                }).catch(function (err) {
+                    console.log(err);
                 });
+            } else {
+                alert("用户名或密码不能为空");
             }
-        },
-        getUrl: function getUrl() {
-            var _this = this;
-            Axios.get('/free-ssr/free').then(function (response) {
-                if (response.data.code == 0) {
-                    _this.items = response.data.data;
-                } else {
-                    alert("\u6293\u53D6" + response.data.message + "\u7F51\u7AD9\u6709\u8BEF\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
         }
     }
 });
+
 Vue.config.devtools = true;
-module.exports = app;
 
 /***/ })
 /******/ ]);

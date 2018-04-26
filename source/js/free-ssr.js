@@ -19,7 +19,7 @@ let app = new Vue({
                 alert("URL不能为空");
             } else {
                 vm.submit = "提交中...";
-                Axios.post('http://47.104.226.230:3007/app/free-ssr/url',{
+                Axios.post('/free-ssr/url',{
                     URL:vm.URL
                 }).then(function(response){
                     vm.submit = "提交";
@@ -31,7 +31,7 @@ let app = new Vue({
         },
         getUrl:function(){
             var _this = this;
-            Axios.get('http://47.104.226.230:3007/app/free-ssr/free')
+            Axios.get('/free-ssr/free')
                 .then(function (response) {
                     if(response.data.code==0){
                         _this.items = response.data.data
