@@ -63,3 +63,5 @@ main-local.php.bk
 .idea
 /node_modules
 node_modules
+
+/server/config.js

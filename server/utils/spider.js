@@ -79,5 +79,4 @@ async function sszhfx(res) {
     return items;
 }
 
-module.exports = Spider;
-module.exports = SpiderSszhfx;
+module.exports = { Spider,SpiderSszhfx};

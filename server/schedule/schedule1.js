@@ -1,5 +1,5 @@
 const schedule = require('node-schedule');
-const SpiderSszhfx = require('../utils/spider');
+const {SpiderSszhfx} = require('../utils/spider');
 const { query,insertData } = require('../utils/async-db');
 const toArr = require('../utils/toArr');
 
