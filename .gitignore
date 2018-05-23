@@ -65,3 +65,4 @@ main-local.php.bk
 node_modules
 
 /server/config.js
+/dist/*
