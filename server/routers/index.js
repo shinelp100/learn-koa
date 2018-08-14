@@ -8,8 +8,10 @@ const home = require('./home');
 const freeSsr = require('./free-ssr');
 const user = require('./user');
 const page = require('./page');
+const wx = require('./wx');
 const error = require('./error');
 
+router.use('',wx.routes(),wx.allowedMethods());
 router.use('/app/',home.routes(),home.allowedMethods());
 router.use('/user',user.routes(),user.allowedMethods());
 router.use('/free-ssr',freeSsr.routes(),freeSsr.allowedMethods());
