@@ -127,7 +127,7 @@ module.exports.getAccessToken = async (ctx) => {
         var data = await wechatApp.getJsApiTicket().then((data) => {
             return data;
         });
-        var signData = sign(data.jsapi_ticket, ctx.query.url);
+        var signData = sign(data.jsapi_ticket, decodeURIComponent(ctx.query.url));
         ctx.body = signData;
     } else {
         ctx.body = "请携带上url：页面地址";

@@ -7,4 +7,4 @@ const Wx = require('../controllers/wx');
 
 module.exports = router
     .get('/api/wechat', Wx.verifyToken)
-    .get('/get/accessToken',Wx.getAccessToken);
+    .get('/weixin/auth',Wx.getAccessToken);

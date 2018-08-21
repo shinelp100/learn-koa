@@ -43,7 +43,7 @@ var sign = function (jsapi_ticket, url) {
   var string = raw(ret);
   var shaObj = new jsSHA(string, 'TEXT');
   ret.signature = shaObj.getHash('SHA-1', 'HEX');
-
+  ret.appId = "wx9d7bb7be5fbd9b38";
   return ret;
 };
 

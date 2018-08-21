@@ -40,5 +40,5 @@ app.use(Static(path.join(__dirname,staticPath)));
 app.use(routers.routes()).use(routers.allowedMethods());
 
 app.listen(config.port,'0.0.0.0',()=>{
-    console.log('app is listening port of 80');
+    console.log('app is listening port of 8080');
 });
