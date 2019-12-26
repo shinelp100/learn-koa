@@ -66,3 +66,4 @@ node_modules
 
 /server/config.js
 /dist/*
+/test2/
